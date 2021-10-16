@@ -3,6 +3,7 @@ package com.example.jobportalapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -28,9 +29,10 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
+    //Progress dialog..
 
-    public RegistrationActivity() {
-    }
+    private ProgressDialog mDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        mDialog = new ProgressDialog(this);
 
         Registration();
     }
@@ -53,7 +56,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         btnReg.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
 
                 String email = emailReg.getText().toString().trim();
                 String pass = passReg.getText().toString().trim();
@@ -68,6 +71,9 @@ public class RegistrationActivity extends AppCompatActivity {
                     return;
                 }
 
+                mDialog.setMessage("Processing...");
+                mDialog.show();
+
                 mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -76,7 +82,10 @@ public class RegistrationActivity extends AppCompatActivity {
 
                             Toast.makeText(getApplicationContext(), "Successfull", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                            mDialog.dismiss();
 
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Registration Failed...", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -85,7 +94,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         btnLogin.setOnClickListener((new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
 
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
