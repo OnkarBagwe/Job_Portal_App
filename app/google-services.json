@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "242881673652",
+    "project_id": "jobportalapp-79a07",
+    "storage_bucket": "jobportalapp-79a07.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:242881673652:android:314cccbb7e49e3631ddae1",
+        "android_client_info": {
+          "package_name": "com.example.jobportalapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "242881673652-96ka325i15njq9hlsqfgk2ktsc9hiasf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jobportalapp",
+            "certificate_hash": "44a537737616fc89dd2d5e97ff055a5d9ffcc184"
+          }
+        },
+        {
+          "client_id": "242881673652-jie0aoi8l4qqmd3u03d9dmr87gebhtfv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBht-A2pTPwWQ9YzaNjei3x05tJcJJo4Uk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "242881673652-jie0aoi8l4qqmd3u03d9dmr87gebhtfv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
