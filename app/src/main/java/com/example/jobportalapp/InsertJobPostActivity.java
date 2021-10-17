@@ -42,7 +42,7 @@ public class InsertJobPostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_insert_job_post);
 
         toolbar = findViewById(R.id.insert_job_toolbar);
-        setSupportActionBar(toolbar);
+//        setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Post Job");
 
         mAuth = FirebaseAuth.getInstance();
@@ -51,7 +51,6 @@ public class InsertJobPostActivity extends AppCompatActivity {
         String uId = mUser.getUid();
 
         mJobPost = FirebaseDatabase.getInstance().getReference().child("Job Post").child(uId);
-
 
         InsertJob();
 
