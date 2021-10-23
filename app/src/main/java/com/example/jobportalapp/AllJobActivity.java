@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.jobportalapp.Model.Data;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -37,7 +38,7 @@ public class AllJobActivity extends AppCompatActivity {
 
         //Database
 
-        mAllJobPost= FirebaseDatabase.getInstance().getReference().child("Job Post");
+        mAllJobPost= FirebaseDatabase.getInstance().getReference().child("Public database");
         mAllJobPost.keepSynced(true);
 
         recyclerView=findViewById(R.id.recycler_all_job);
@@ -55,7 +56,9 @@ public class AllJobActivity extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
 
-        FirebaseRecyclerAdapter<Data, AllJobPostViewHolder>adapter=new FirebaseRecyclerAdapter<Data, AllJobPostViewHolder>
+
+
+        FirebaseRecyclerAdapter<Data, AllJobPostViewHolder> adapter=new FirebaseRecyclerAdapter<Data, AllJobPostViewHolder>
                 (
                        Data.class,
                        R.layout.alljobpost,
@@ -64,10 +67,19 @@ public class AllJobActivity extends AppCompatActivity {
 
                 ) {
             @Override
-            protected void populateViewHolder(AllJobPostViewHolder allJobPostViewHolder, Data data, int i) {
+            protected void populateViewHolder(AllJobPostViewHolder viewHolder, Data model, int i) {
+
+                viewHolder.setJobTitle(model.getTitle());
+                viewHolder.setJobDate(model.getDate());
+                viewHolder.setJobDescription(model.getDescription());
+                viewHolder.setJobSkills(model.getSkills());
+                viewHolder.setJobSalary(model.getSalary());
 
             }
-        }
+
+        };
+
+        recyclerView.setAdapter(adapter);
     }
 
     public static class AllJobPostViewHolder extends RecyclerView.ViewHolder{
