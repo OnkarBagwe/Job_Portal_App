@@ -30,6 +30,7 @@ public class AllJobActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.NoActionBarTheme);
         setContentView(R.layout.activity_all_job);
 
         toolbar=findViewById(R.id.all_job_post);

@@ -39,7 +39,7 @@ public class HomeActivity extends AppCompatActivity {
         btnPostjob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), PostJobActivity.class));
+                startActivity(new Intent(getApplicationContext(), InsertJobPostActivity.class));
 
             }
         });
