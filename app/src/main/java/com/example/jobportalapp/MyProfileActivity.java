@@ -67,7 +67,8 @@ public class MyProfileActivity extends AppCompatActivity {
         fStore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
 
-        StorageReference profileRef = storageReference.child("users/" + fAuth.getCurrentUser().getUid() + "/profile.jpg");
+
+        StorageReference profileRef = storageReference.child("users/"+fAuth.getCurrentUser().getUid()+"profile.jpg");
         profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -181,15 +182,34 @@ public class MyProfileActivity extends AppCompatActivity {
             if(requestCode==1000){
                 if(resultCode==Activity.RESULT_OK){
                     Uri imageUri = data.getData();
-                    profileImage.setImageURI(imageUri);
+                   // profileImage.setImageURI(imageUri);
+                    uploadImageToFirebase(imageUri);
 
                 }
             }
 
         }
 
-
-
+private void uploadImageToFirebase(Uri imageUri) {
+    StorageReference fileRef = storageReference.child("users/"+fAuth.getCurrentUser().getUid()+"profile.jpg");
+    fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        @Override
+        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+            fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Picasso.get().load(uri).into(profileImage);
+                }
+            });
+            Toast.makeText(MyProfileActivity.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
+        }
+    }).addOnFailureListener(new OnFailureListener() {
+        @Override
+        public void onFailure(@NonNull Exception e) {
+            Toast.makeText(MyProfileActivity.this, "Failed.", Toast.LENGTH_SHORT).show();
+        }
+    });
+}
     public void logout(View view) {
         FirebaseAuth.getInstance().signOut();//logout
         startActivity(new Intent(getApplicationContext(),MainActivity.class));
