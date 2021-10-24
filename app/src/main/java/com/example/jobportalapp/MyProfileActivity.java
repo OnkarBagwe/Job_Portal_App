@@ -53,10 +53,10 @@ public class MyProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.profile);
         phone = findViewById(R.id.profilePhone);
         fullName = findViewById(R.id.profileName);
-        email    = findViewById(R.id.profileEmail);
+        email = findViewById(R.id.profileEmail);
         resetPassLocal = findViewById(R.id.resetPasswordLocal);
 
         profileImage = findViewById(R.id.profileImage);
@@ -67,7 +67,7 @@ public class MyProfileActivity extends AppCompatActivity {
         fStore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
 
-        StorageReference profileRef = storageReference.child("users/"+fAuth.getCurrentUser().getUid()+"/profile.jpg");
+        StorageReference profileRef = storageReference.child("users/" + fAuth.getCurrentUser().getUid() + "/profile.jpg");
         profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -82,7 +82,7 @@ public class MyProfileActivity extends AppCompatActivity {
         userId = fAuth.getCurrentUser().getUid();
         user = fAuth.getCurrentUser();
 
-        if(!user.isEmailVerified()){
+        if (!user.isEmailVerified()) {
             verifyMsg.setVisibility(View.VISIBLE);
             resendCode.setVisibility(View.VISIBLE);
 
@@ -106,18 +106,16 @@ public class MyProfileActivity extends AppCompatActivity {
         }
 
 
-
-
         DocumentReference documentReference = fStore.collection("users").document(userId);
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                if(documentSnapshot.exists()){
+                if (documentSnapshot.exists()) {
                     phone.setText(documentSnapshot.getString("phone"));
                     fullName.setText(documentSnapshot.getString("fName"));
                     email.setText(documentSnapshot.getString("email"));
 
-                }else {
+                } else {
                     Log.d("tag", "onEvent: Document do not exists");
                 }
             }
@@ -166,15 +164,16 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
 
-        changeProfileImage.setOnClickListener(new View.onClickListener(){
+        changeProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 //open gallery
-                Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Images.Media.EXTERNAL_CONTENT_URI);
+                Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(openGalleryIntent, 1000);
 
             }
         });
+    }
 
         @Override
         protected void onActivityResult(int requestCode, int resultCode, @androidx.annotation.Nullable Intent data){
@@ -189,14 +188,11 @@ public class MyProfileActivity extends AppCompatActivity {
 
         }
 
-    }
-
-
 
 
     public void logout(View view) {
         FirebaseAuth.getInstance().signOut();//logout
-        startActivity(new Intent(getApplicationContext(),Login.class));
+        startActivity(new Intent(getApplicationContext(),MainActivity.class));
         finish();
     }
 
