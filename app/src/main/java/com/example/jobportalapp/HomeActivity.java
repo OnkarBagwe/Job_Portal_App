@@ -17,6 +17,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private Button btnAlljob;
     private Button btnPostjob;
+    private Button btnViewProfile;
 
     //Toolbar
 
@@ -37,6 +38,7 @@ public class HomeActivity extends AppCompatActivity {
 
         btnAlljob = findViewById(R.id.btn_allJob);
         btnPostjob = findViewById(R.id.btn_postJob);
+        btnViewProfile = findViewById(R.id.btn_myprofile);
 
         btnAlljob.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,6 +52,12 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), InsertJobPostActivity.class));
 
+            }
+        });
+        btnViewProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), MyProfileActivity.class));
             }
         });
     }

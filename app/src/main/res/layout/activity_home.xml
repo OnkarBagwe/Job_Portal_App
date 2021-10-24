@@ -16,6 +16,18 @@
         android:orientation="vertical"
         android:gravity="center"
         android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/btn_postJob"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/edit_design"
+            android:text="Post a Job"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@android:color/holo_red_dark" />
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,10 +43,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/edit_design"
-            android:text="Post a Job"
+            android:text="My Profile"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="@android:color/holo_red_dark"
-            android:id="@+id/btn_postJob"
+            android:id="@+id/btn_myprofile"
             android:layout_marginTop="20dp" />
 
 
