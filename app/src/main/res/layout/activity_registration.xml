@@ -29,6 +29,16 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:textColorHint="@android:color/white"
+                android:hint="Full Name: "
+                android:background="@drawable/edit_design"
+                android:padding="15dp"
+                android:id="@+id/full_name"
+                />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textColorHint="@android:color/white"
                 android:hint="Email: "
                 android:background="@drawable/edit_design"
                 android:padding="15dp"
@@ -45,6 +55,26 @@
                 android:hint="Password: "
                 android:inputType="textPassword"
                 android:id="@+id/registration_password"
+                />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textColorHint="@android:color/white"
+                android:hint="Phone Number: "
+                android:background="@drawable/edit_design"
+                android:padding="15dp"
+                android:id="@+id/phone_no"
+                />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textColorHint="@android:color/white"
+                android:hint="Designation: "
+                android:background="@drawable/edit_design"
+                android:padding="15dp"
+                android:id="@+id/designation"
                 />
             <Button
                 android:layout_width="match_parent"
