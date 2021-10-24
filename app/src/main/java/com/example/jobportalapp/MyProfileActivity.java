@@ -1,4 +1,5 @@
 package com.example.jobportalapp;
+import com.example.jobportalapp.Model.Data;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -24,17 +25,17 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-//import com.google.firebase.firestore.DocumentReference;
-//import com.google.firebase.firestore.DocumentSnapshot;
-//import com.google.firebase.firestore.EventListener;
-//import com.google.firebase.firestore.FirebaseFirestore;
-//import com.google.firebase.firestore.FirebaseFirestoreException;
-//import com.google.firebase.storage.FirebaseStorage;
-//import com.google.firebase.storage.StorageReference;
-//import com.google.firebase.storage.UploadTask;
-//import com.squareup.picasso.Picasso;
-//
-//import javax.annotation.Nullable;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+
+import javax.annotation.Nullable;
 
 public class MyProfileActivity extends AppCompatActivity {
     private static final int GALLERY_INTENT_CODE = 1023 ;
@@ -142,12 +143,12 @@ public class MyProfileActivity extends AppCompatActivity {
                         user.updatePassword(newPassword).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                Toast.makeText(MainActivity.this, "Password Reset Successfully.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MyProfileActivity.this, "Password Reset Successfully.", Toast.LENGTH_SHORT).show();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(MainActivity.this, "Password Reset Failed.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MyProfileActivity.this, "Password Reset Failed.", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
