@@ -2,8 +2,10 @@ package com.example.jobportalapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +22,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -47,6 +51,8 @@ public class RegistrationActivity extends AppCompatActivity {
     private Button btnReg;
     private Button btnLogin;
 
+    FusedLocationProviderClient fusedLocationProviderClient;
+
     //Firebase authentication
     private FirebaseAuth mAuth;
 
@@ -56,7 +62,6 @@ public class RegistrationActivity extends AppCompatActivity {
     //Progress dialog..
 
     private ProgressDialog mDialog;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,48 +77,48 @@ public class RegistrationActivity extends AppCompatActivity {
         Registration();
     }
 
-    private String hereLocation(double lat, double lon){
-        String cityName = "";
+//    private String hereLocation(double lat, double lon){
+//        String cityName = "";
+//
+//        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+//        List<Address> addresses;
+//        try{
+//            addresses = geocoder.getFromLocation(lat, lon, 10);
+//            if(addresses.size()>0){
+//                for (Address adr:addresses){
+//                    if(adr.getLocality()!=null && adr.getLocality().length()>0){
+//                        cityName = adr.getLocality();
+//                        break;
+//                    }
+//                }
+//            }
+//        } catch ( IOException e){
+//            e.printStackTrace();
+//        }
+//        return cityName;
+//    }
 
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-        List<Address> addresses;
-        try{
-            addresses = geocoder.getFromLocation(lat, lon, 10);
-            if(addresses.size()>0){
-                for (Address adr:addresses){
-                    if(adr.getLocality()!=null && adr.getLocality().length()>0){
-                        cityName = adr.getLocality();
-                        break;
-                    }
-                }
-            }
-        } catch ( IOException e){
-            e.printStackTrace();
-        }
-        return cityName;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
-            case 1000:{
-                if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                    Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                    try{
-                        String city = hereLocation(location.getLatitude(), location.getLatitude());
-                        System.out.println("HHHHHHHHHHHHHHHHOOOOOOOOOOOLLLLLLLLLLLLLAAAAAAAAAAAAAAAAAAAAAAaaa"+city);
-                    } catch (Exception e){
-                        e.printStackTrace();
-                        Toast.makeText(RegistrationActivity.this, "Not found!", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(this, "Permission not granted", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            }
-        }
-    }
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        switch (requestCode){
+//            case 1000:{
+//                if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+//                    LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//                    Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//                    try{
+//                        String city = hereLocation(location.getLatitude(), location.getLatitude());
+//                        System.out.println("HHHHHHHHHHHHHHHHOOOOOOOOOOOLLLLLLLLLLLLLAAAAAAAAAAAAAAAAAAAAAA"+city);
+//                    } catch (Exception e){
+//                        e.printStackTrace();
+//                        Toast.makeText(RegistrationActivity.this, "Not found!", Toast.LENGTH_SHORT).show();
+//                    }
+//                } else {
+//                    Toast.makeText(this, "Permission not granted", Toast.LENGTH_SHORT).show();
+//                }
+//                break;
+//            }
+//        }
+//    }
 
     private void Registration(){
 
@@ -125,6 +130,10 @@ public class RegistrationActivity extends AppCompatActivity {
 
         btnReg = findViewById(R.id.btn_reg);
         btnLogin = findViewById(R.id.btn_login);
+
+        //Initialize fusedLocationProviderClient
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         btnReg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,23 +171,49 @@ public class RegistrationActivity extends AppCompatActivity {
                     return;
                 }
 
-                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-                    requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
+                if (ActivityCompat.checkSelfPermission(RegistrationActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                    //When permission granted
+                    fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Location> task) {
+                            //Initialize Location
+                            Location location = task.getResult();
+                            if (location != null){
+                                // Initialize geoCoder
+                                Geocoder geocoder = new Geocoder(RegistrationActivity.this, Locale.getDefault());
+                                //Initialize address list
+                                List<Address> addresses;
+                                try{
+                                    addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                                    String city = addresses.get(0).getLocality() + ", " + addresses.get(0).getCountryName();
+                                } catch ( IOException e){
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    });
                 } else {
-                    LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                    Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                    try{
-                        city = hereLocation(location.getLatitude(), location.getLatitude());
-                    } catch (Exception e){
-                        e.printStackTrace();
-                        Toast.makeText(RegistrationActivity.this, "Not found!", Toast.LENGTH_SHORT).show();
-                    }
+                    //When permission denied
+                    ActivityCompat.requestPermissions(RegistrationActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
                 }
+
+//                if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+//                    requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1000);
+//                } else {
+//                    LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//                    Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//                    try{
+//                        city = hereLocation(location.getLatitude(), location.getLatitude());
+//                    } catch (Exception e){
+//                        e.printStackTrace();
+//                        Toast.makeText(RegistrationActivity.this, "Not found!", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
 
                 mDialog.setMessage("Processing...");
                 mDialog.show();
 
-                String finalCity = city;
+//                String finalCity = city;
                 mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -186,12 +221,11 @@ public class RegistrationActivity extends AppCompatActivity {
                         if (task.isSuccessful()){
                             String user_id = mAuth.getCurrentUser().getUid();
                             String join_date = DateFormat.getDateInstance().format(new Date());
-                            ProfileData data = new ProfileData (fullname, phoneno, desig, email, pass, finalCity, user_id, join_date);
+                            ProfileData data = new ProfileData (fullname, phoneno, desig, email, pass, city, user_id, join_date);
                             Userdata.child(user_id).setValue(data);
                             Toast.makeText(getApplicationContext(), "Successfull", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                             mDialog.dismiss();
-
                         } else {
                             Toast.makeText(getApplicationContext(), "Registration Failed...", Toast.LENGTH_SHORT).show();
                         }
@@ -209,4 +243,5 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         }));
     }
+
 }
