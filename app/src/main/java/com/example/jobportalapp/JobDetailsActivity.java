@@ -15,6 +15,7 @@ public class JobDetailsActivity extends AppCompatActivity {
 
     private TextView mTitle;
     private TextView mDate;
+    private TextView mDeadline;
     private TextView mDescription;
     private TextView mSkills;
     private TextView mSalary;
@@ -29,6 +30,7 @@ public class JobDetailsActivity extends AppCompatActivity {
 
         mTitle=findViewById(R.id.job_details_title);
         mDate=findViewById(R.id.job_details_date);
+        mDeadline=findViewById(R.id.job_details_deadline);
         mDescription=findViewById(R.id.job_details_description);
         mSkills=findViewById(R.id.job_details_skills);
         mSalary=findViewById(R.id.job_details_salary);
@@ -39,12 +41,14 @@ public class JobDetailsActivity extends AppCompatActivity {
 
         String title=intent.getStringExtra("title");
         String date=intent.getStringExtra("date");
+        String deadline=intent.getStringExtra("deadline");
         String description=intent.getStringExtra("description");
         String skills=intent.getStringExtra("skills");
         String salary=intent.getStringExtra("salary");
 
         mTitle.setText(title);
         mDate.setText(date);
+        mDeadline.setText(deadline);
         mDescription.setText(description);
         mSkills.setText(skills);
         mSalary.setText(salary);

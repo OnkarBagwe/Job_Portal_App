@@ -9,18 +9,20 @@ public class Data {
 
     String id;
     String date;
+    String deadline;
 
     public Data(){
 
     }
 
-    public Data(String title, String description, String skills, String salary, String id, String date) {
+    public Data(String title, String description, String skills, String salary, String id, String date, String deadline) {
         this.title = title;
         this.description = description;
         this.skills = skills;
         this.salary = salary;
         this.id = id;
         this.date = date;
+        this.deadline = deadline;
     }
 
     public String getTitle() {
@@ -69,5 +71,13 @@ public class Data {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
     }
 }

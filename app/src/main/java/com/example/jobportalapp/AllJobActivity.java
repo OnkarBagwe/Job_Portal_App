@@ -73,6 +73,7 @@ public class AllJobActivity extends AppCompatActivity {
 
                 viewHolder.setJobTitle(model.getTitle());
                 viewHolder.setJobDate(model.getDate());
+                viewHolder.setDeadlineDate(model.getDeadline());
                 viewHolder.setJobDescription(model.getDescription());
                 viewHolder.setJobSkills(model.getSkills());
                 viewHolder.setJobSalary(model.getSalary());
@@ -85,6 +86,7 @@ public class AllJobActivity extends AppCompatActivity {
 
                         intent.putExtra("title",model.getTitle());
                         intent.putExtra("date",model.getDate());
+                        intent.putExtra("deadline",model.getDeadline());
                         intent.putExtra("description",model.getDescription());
                         intent.putExtra("skills",model.getSkills());
                         intent.putExtra("salary",model.getSalary());
@@ -117,7 +119,12 @@ public class AllJobActivity extends AppCompatActivity {
 
         public void setJobDate(String date){
             TextView mDate=myview.findViewById(R.id.all_job_post_date);
-            mDate.setText(date);
+            mDate.setText("Posted on: " +date);
+        }
+
+        public void setDeadlineDate(String deadline){
+            TextView mDeadline=myview.findViewById(R.id.all_job_post_deadline);
+            mDeadline.setText("Deadline: " +deadline);
         }
 
         public void setJobDescription(String description){
