@@ -123,21 +123,15 @@ public class MyProfileActivity extends AppCompatActivity {
 //        mUserdata = FirebaseDatabase.getInstance().getReference().child("User Data").child(user_id);
 //        mUserdata.keepSynced(true);
 
-DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("User Data").child(userId);
-        System.out.println("HELOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO111111");
-        System.out.println(reference.child("email"));
-        Query checkUser = reference.child("email");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("User Data").child(userId);
+        Query checkUser = reference;
         checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    System.out.println("HELOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOANDARVALA");
-                    System.out.println(dataSnapshot.child("full_name").getValue(String.class));
-
                     fullName.setText(dataSnapshot.child("full_name").getValue(String.class));
                     phone.setText(dataSnapshot.child("phone_no").getValue(String.class));
                     email.setText(dataSnapshot.child("email").getValue(String.class));
-
                 } else {
                     Log.d("tag", "onEvent: Document do not exists");
                 }
