@@ -25,8 +25,12 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -114,23 +118,34 @@ public class MyProfileActivity extends AppCompatActivity {
 
 
         DocumentReference documentReference = fStore.collection("users").document(userId);
-        String user_id = mAuth.getCurrentUser().getUid();
+//        String user_id = mAuth.getCurrentUser().getUid();
+//
+//        mUserdata = FirebaseDatabase.getInstance().getReference().child("User Data").child(user_id);
+//        mUserdata.keepSynced(true);
 
-        mUserdata = FirebaseDatabase.getInstance().getReference().child("User Data").child(user_id);
-        mUserdata.keepSynced(true);
-
-
-        documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("User Data").child(userId);
+        System.out.println("HELOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO111111");
+        System.out.println(reference.child("email"));
+        Query checkUser = reference.child("email");
+        checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                if (documentSnapshot.exists()) {
-                    phone.setText(documentSnapshot.getString("phone"));
-                    fullName.setText(documentSnapshot.getString("fName"));
-                    email.setText(documentSnapshot.getString("email"));
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    System.out.println("HELOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOANDARVALA");
+                    System.out.println(dataSnapshot.child("full_name").getValue(String.class));
+
+                    fullName.setText(dataSnapshot.child("full_name").getValue(String.class));
+                    phone.setText(dataSnapshot.child("phone_no").getValue(String.class));
+                    email.setText(dataSnapshot.child("email").getValue(String.class));
 
                 } else {
                     Log.d("tag", "onEvent: Document do not exists");
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
 
