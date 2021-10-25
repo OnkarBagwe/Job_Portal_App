@@ -25,6 +25,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -48,6 +50,10 @@ public class MyProfileActivity extends AppCompatActivity {
     FirebaseUser user;
     ImageView profileImage;
     StorageReference storageReference;
+
+    private DatabaseReference mUserdata;
+
+    private FirebaseAuth mAuth;
 
 
     @Override
@@ -108,6 +114,12 @@ public class MyProfileActivity extends AppCompatActivity {
 
 
         DocumentReference documentReference = fStore.collection("users").document(userId);
+        String user_id = mAuth.getCurrentUser().getUid();
+
+        mUserdata = FirebaseDatabase.getInstance().getReference().child("User Data").child(user_id);
+        mUserdata.keepSynced(true);
+
+
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
