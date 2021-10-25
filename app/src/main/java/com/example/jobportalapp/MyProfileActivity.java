@@ -15,11 +15,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -194,20 +196,35 @@ public class MyProfileActivity extends AppCompatActivity {
         });
 
         changeProfileImage.setOnClickListener(new View.OnClickListener() {
+
+
             @Override
             public void onClick(View v) {
-//                //open gallery
-////                Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-////                startActivityForResult(openGalleryIntent, 1000);
-//                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                if (intent.resolveActivity(getPackageManager())!=null){
-//                    startActivityForResult(intent,TAKE_IMAGE_CODE);
-                handleImageClick(v);
+
+//
+                PopupMenu popupMenu = new PopupMenu(MyProfileActivity.this, changeProfileImage);
+                popupMenu.getMenuInflater().inflate(R.menu.popup_menu, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getTitle().equals("Open Camera")) {
+                            handleImageClick(v);
+                        } else {
+                            // open gallery
+                            Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            startActivityForResult(openGalleryIntent, 1000);
+                        }
+                        return true;
+                    }
+                });
+                popupMenu.show();
 
                 }
 
             });
     }
+
+
     public void handleImageClick(View v){
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (intent.resolveActivity(getPackageManager())!=null) {
@@ -224,6 +241,14 @@ public class MyProfileActivity extends AppCompatActivity {
                     Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                     profileImage.setImageBitmap(bitmap);
                     handleUpload(bitmap);
+            }
+        }
+        else if(requestCode==1000){
+            if(resultCode==Activity.RESULT_OK){
+                Uri imageUri = data.getData();
+                // profileImage.setImageURI(imageUri);
+                uploadImageToFirebase(imageUri);
+
             }
         }
     }
@@ -250,40 +275,28 @@ public class MyProfileActivity extends AppCompatActivity {
                         Toast.makeText(MyProfileActivity.this, "Failed.", Toast.LENGTH_SHORT).show();                    }
                 });
     }
-    //        @Override
-//        protected void onActivityResult(int requestCode, int resultCode, @androidx.annotation.Nullable Intent data){
-//            super.onActivityResult(requestCode, resultCode, data);
-//            if(requestCode==1000){
-//                if(resultCode==Activity.RESULT_OK){
-//                    Uri imageUri = data.getData();
-//                   // profileImage.setImageURI(imageUri);
-//                    uploadImageToFirebase(imageUri);
-//
-//                }
-//            }
-//
-//        }
-//
-//private void uploadImageToFirebase(Uri imageUri) {
-//    StorageReference fileRef = storageReference.child("users/"+fAuth.getCurrentUser().getUid()+"profile.jpg");
-//    fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//        @Override
-//        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//            fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                @Override
-//                public void onSuccess(Uri uri) {
-//                    Picasso.get().load(uri).into(profileImage);
-//                }
-//            });
-//            Toast.makeText(MyProfileActivity.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
-//        }
-//    }).addOnFailureListener(new OnFailureListener() {
-//        @Override
-//        public void onFailure(@NonNull Exception e) {
-//            Toast.makeText(MyProfileActivity.this, "Failed.", Toast.LENGTH_SHORT).show();
-//        }
-//    });
-//}
+
+
+private void uploadImageToFirebase(Uri imageUri) {
+    StorageReference fileRef = storageReference.child("users/"+fAuth.getCurrentUser().getUid()+"profile.jpg");
+    fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        @Override
+        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+            fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Picasso.get().load(uri).into(profileImage);
+                }
+            });
+            Toast.makeText(MyProfileActivity.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
+        }
+    }).addOnFailureListener(new OnFailureListener() {
+        @Override
+        public void onFailure(@NonNull Exception e) {
+            Toast.makeText(MyProfileActivity.this, "Failed.", Toast.LENGTH_SHORT).show();
+        }
+    });
+}
     public void logout(View view) {
         FirebaseAuth.getInstance().signOut();//logout
         startActivity(new Intent(getApplicationContext(),MainActivity.class));
