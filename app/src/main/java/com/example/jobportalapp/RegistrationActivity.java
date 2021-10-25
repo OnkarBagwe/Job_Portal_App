@@ -47,7 +47,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText full_name;
     private EditText phone_no;
     private EditText designation;
-
+    private String city;
     private Button btnReg;
     private Button btnLogin;
 
@@ -144,7 +144,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 String fullname = full_name.getText().toString().trim();
                 String phoneno = phone_no.getText().toString().trim();
                 String desig = designation.getText().toString().trim();
-                String city = "";
+//                String city = "";
 
                 if(TextUtils.isEmpty(email)){
                     emailReg.setError("Required Field...");
@@ -178,6 +178,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Location> task) {
                             //Initialize Location
                             Location location = task.getResult();
+
                             if (location != null){
                                 // Initialize geoCoder
                                 Geocoder geocoder = new Geocoder(RegistrationActivity.this, Locale.getDefault());
@@ -185,7 +186,8 @@ public class RegistrationActivity extends AppCompatActivity {
                                 List<Address> addresses;
                                 try{
                                     addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                                    String city = addresses.get(0).getLocality() + ", " + addresses.get(0).getCountryName();
+                                    city = addresses.get(0).getLocality() + ", " + addresses.get(0).getCountryName();System.out.println("------------------noooooooooooooooooooooo------------------------------------------");
+                                    System.out.println(city);
                                 } catch ( IOException e){
                                     e.printStackTrace();
                                 }
@@ -213,14 +215,16 @@ public class RegistrationActivity extends AppCompatActivity {
                 mDialog.setMessage("Processing...");
                 mDialog.show();
 
-//                String finalCity = city;
+
                 mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
 
+
                         if (task.isSuccessful()){
                             String user_id = mAuth.getCurrentUser().getUid();
                             String join_date = DateFormat.getDateInstance().format(new Date());
+
                             ProfileData data = new ProfileData (fullname, phoneno, desig, email, pass, city, user_id, join_date);
                             Userdata.child(user_id).setValue(data);
                             Toast.makeText(getApplicationContext(), "Successfull", Toast.LENGTH_SHORT).show();
