@@ -2,6 +2,7 @@ package com.example.jobportalapp;
 import com.example.jobportalapp.Model.Data;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +10,7 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -41,7 +43,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import javax.annotation.Nullable;
+import java.io.ByteArrayOutputStream;
 
 public class MyProfileActivity extends AppCompatActivity {
     private static final int GALLERY_INTENT_CODE = 1023 ;
@@ -54,7 +56,7 @@ public class MyProfileActivity extends AppCompatActivity {
     FirebaseUser user;
     ImageView profileImage;
     StorageReference storageReference;
-
+    int TAKE_IMAGE_CODE=10001;
     private DatabaseReference mUserdata;
 
     private FirebaseAuth mAuth;
@@ -194,48 +196,94 @@ public class MyProfileActivity extends AppCompatActivity {
         changeProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //open gallery
-                Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(openGalleryIntent, 1000);
+//                //open gallery
+////                Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+////                startActivityForResult(openGalleryIntent, 1000);
+//                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                if (intent.resolveActivity(getPackageManager())!=null){
+//                    startActivityForResult(intent,TAKE_IMAGE_CODE);
+                handleImageClick(v);
 
-            }
-        });
+                }
+
+            });
+    }
+    public void handleImageClick(View v){
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (intent.resolveActivity(getPackageManager())!=null) {
+                    startActivityForResult(intent, TAKE_IMAGE_CODE);
+                }
     }
 
-        @Override
-        protected void onActivityResult(int requestCode, int resultCode, @androidx.annotation.Nullable Intent data){
-            super.onActivityResult(requestCode, resultCode, data);
-            if(requestCode==1000){
-                if(resultCode==Activity.RESULT_OK){
-                    Uri imageUri = data.getData();
-                   // profileImage.setImageURI(imageUri);
-                    uploadImageToFirebase(imageUri);
-
-                }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == TAKE_IMAGE_CODE){
+            switch (resultCode){
+                case RESULT_OK:
+                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                    profileImage.setImageBitmap(bitmap);
+                    handleUpload(bitmap);
             }
-
         }
-
-private void uploadImageToFirebase(Uri imageUri) {
-    StorageReference fileRef = storageReference.child("users/"+fAuth.getCurrentUser().getUid()+"profile.jpg");
-    fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-        @Override
-        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-            fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    Picasso.get().load(uri).into(profileImage);
-                }
-            });
-            Toast.makeText(MyProfileActivity.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
-        }
-    }).addOnFailureListener(new OnFailureListener() {
-        @Override
-        public void onFailure(@NonNull Exception e) {
-            Toast.makeText(MyProfileActivity.this, "Failed.", Toast.LENGTH_SHORT).show();
-        }
-    });
-}
+    }
+    private void handleUpload(Bitmap bitmap){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100,baos);
+        StorageReference fileRef = storageReference.child("users/"+fAuth.getCurrentUser().getUid()+"profile.jpg");
+        fileRef.putBytes(baos.toByteArray())
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                Picasso.get().load(uri).into(profileImage);
+                            }
+                        });
+                        Toast.makeText(MyProfileActivity.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(MyProfileActivity.this, "Failed.", Toast.LENGTH_SHORT).show();                    }
+                });
+    }
+    //        @Override
+//        protected void onActivityResult(int requestCode, int resultCode, @androidx.annotation.Nullable Intent data){
+//            super.onActivityResult(requestCode, resultCode, data);
+//            if(requestCode==1000){
+//                if(resultCode==Activity.RESULT_OK){
+//                    Uri imageUri = data.getData();
+//                   // profileImage.setImageURI(imageUri);
+//                    uploadImageToFirebase(imageUri);
+//
+//                }
+//            }
+//
+//        }
+//
+//private void uploadImageToFirebase(Uri imageUri) {
+//    StorageReference fileRef = storageReference.child("users/"+fAuth.getCurrentUser().getUid()+"profile.jpg");
+//    fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//        @Override
+//        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//            fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                @Override
+//                public void onSuccess(Uri uri) {
+//                    Picasso.get().load(uri).into(profileImage);
+//                }
+//            });
+//            Toast.makeText(MyProfileActivity.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
+//        }
+//    }).addOnFailureListener(new OnFailureListener() {
+//        @Override
+//        public void onFailure(@NonNull Exception e) {
+//            Toast.makeText(MyProfileActivity.this, "Failed.", Toast.LENGTH_SHORT).show();
+//        }
+//    });
+//}
     public void logout(View view) {
         FirebaseAuth.getInstance().signOut();//logout
         startActivity(new Intent(getApplicationContext(),MainActivity.class));

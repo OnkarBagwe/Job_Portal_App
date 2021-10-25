@@ -72,7 +72,7 @@ public class AllJobActivity extends AppCompatActivity {
             protected void populateViewHolder(AllJobPostViewHolder viewHolder, Data model, int i) {
 
                 viewHolder.setJobTitle(model.getTitle());
-                viewHolder.setJobDate(model.getDate());
+//                viewHolder.setJobDate(model.getDate());
                 viewHolder.setDeadlineDate(model.getDeadline());
                 viewHolder.setJobDescription(model.getDescription());
                 viewHolder.setJobSkills(model.getSkills());
@@ -85,7 +85,7 @@ public class AllJobActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(),JobDetailsActivity.class);
 
                         intent.putExtra("title",model.getTitle());
-                        intent.putExtra("date",model.getDate());
+//                        intent.putExtra("date",model.getDate());
                         intent.putExtra("deadline",model.getDeadline());
                         intent.putExtra("description",model.getDescription());
                         intent.putExtra("skills",model.getSkills());
@@ -114,13 +114,13 @@ public class AllJobActivity extends AppCompatActivity {
 
         public void setJobTitle(String title){
             TextView mTitle=myview.findViewById(R.id.all_job_post_title);
-            mTitle.setText(title);
+            mTitle.setText("Job Title: "+title);
         }
 
-        public void setJobDate(String date){
-            TextView mDate=myview.findViewById(R.id.all_job_post_date);
-            mDate.setText("Posted on: " +date);
-        }
+//        public void setJobDate(String date){
+//            TextView mDate=myview.findViewById(R.id.all_job_post_date);
+//            mDate.setText("Posted on: " +date);
+//        }
 
         public void setDeadlineDate(String deadline){
             TextView mDeadline=myview.findViewById(R.id.all_job_post_deadline);
@@ -129,17 +129,17 @@ public class AllJobActivity extends AppCompatActivity {
 
         public void setJobDescription(String description){
             TextView mDescription=myview.findViewById(R.id.all_job_post_description);
-            mDescription.setText(description);
+            mDescription.setText("Job Description: "+description);
         }
 
         public void setJobSkills(String skills){
             TextView mSkills=myview.findViewById(R.id.all_job_post_skills);
-            mSkills.setText(skills);
+            mSkills.setText("Skills Required: "+skills);
         }
 
         public void setJobSalary(String salary){
             TextView mSalary=myview.findViewById(R.id.all_job_post_salary);
-            mSalary.setText(salary);
+            mSalary.setText("Salary Offered: "+salary);
         }
 
     }

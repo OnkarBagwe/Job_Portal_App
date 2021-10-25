@@ -29,7 +29,7 @@ public class JobDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Job Details");
 
         mTitle=findViewById(R.id.job_details_title);
-        mDate=findViewById(R.id.job_details_date);
+//        mDate=findViewById(R.id.job_details_date);
         mDeadline=findViewById(R.id.job_details_deadline);
         mDescription=findViewById(R.id.job_details_description);
         mSkills=findViewById(R.id.job_details_skills);
@@ -40,17 +40,17 @@ public class JobDetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         String title=intent.getStringExtra("title");
-        String date=intent.getStringExtra("date");
+//        String date=intent.getStringExtra("date");
         String deadline=intent.getStringExtra("deadline");
         String description=intent.getStringExtra("description");
         String skills=intent.getStringExtra("skills");
         String salary=intent.getStringExtra("salary");
 
-        mTitle.setText(title);
-        mDate.setText(date);
-        mDeadline.setText(deadline);
-        mDescription.setText(description);
-        mSkills.setText(skills);
-        mSalary.setText(salary);
+        mTitle.setText("Job Title: "+title);
+//        mDate.setText(date);
+        mDeadline.setText("Deadline: " +deadline);
+        mDescription.setText("Job Description: "+description);
+        mSkills.setText("Skills Required: "+skills);
+        mSalary.setText("Salary Offered: "+salary);
     }
 }
