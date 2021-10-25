@@ -37,6 +37,17 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:padding="5dp"
+        android:textAppearance="?android:textAppearanceSmall"
+        android:textColor="#C22D03"
+        android:text="25 October,2021"
+        android:id="@+id/job_details_deadline"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:padding="5dp"
         android:textAppearance="?android:textAppearanceMedium"
         android:textColor="@android:color/black"
         android:text="Description..."

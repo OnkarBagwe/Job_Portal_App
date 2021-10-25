@@ -41,6 +41,17 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:padding="5dp"
+            android:text="18 October,2021"
+            android:textColor="#AC2B02"
+            android:id="@+id/all_job_post_deadline"
+            android:textAppearance="?android:textAppearanceSmall"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:padding="5dp"
             android:text="Description"
             android:textColor="@android:color/black"
             android:maxLines="3"

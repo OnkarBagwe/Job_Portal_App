@@ -36,6 +36,16 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="29 July, 2020"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:padding="10dp"
+            android:textColor="#B32B02"
+            android:id="@+id/job_date_deadline">
+        </TextView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="Description"
             android:textAppearance="?android:textAppearanceMedium"
             android:padding="5dp"
