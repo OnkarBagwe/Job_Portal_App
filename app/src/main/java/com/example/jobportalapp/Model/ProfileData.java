@@ -7,6 +7,7 @@ public class ProfileData {
     String designation;
     String email;
     String password;
+    String location;
 
     String user_id;
     String join_date;
@@ -15,12 +16,13 @@ public class ProfileData {
 
     }
 
-    public ProfileData(String full_name, String phone_no, String designation, String email, String password, String user_id, String join_date) {
+    public ProfileData(String full_name, String phone_no, String designation, String email, String password, String location, String user_id, String join_date) {
         this.full_name = full_name;
         this.phone_no = phone_no;
         this.designation = designation;
         this.email = email;
         this.password = password;
+        this.location = location;
         this.user_id = user_id;
         this.join_date = join_date;
     }
@@ -65,6 +67,14 @@ public class ProfileData {
         this.password = password;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public String getUser_id() {
         return user_id;
     }
@@ -80,4 +90,5 @@ public class ProfileData {
     public void setJoin_date(String join_date) {
         this.join_date = join_date;
     }
+
 }
