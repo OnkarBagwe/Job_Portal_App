@@ -86,7 +86,7 @@ public class AllJobActivity extends AppCompatActivity {
                         intent.putExtra("title",model.getTitle());
                         intent.putExtra("date",model.getDate());
                         intent.putExtra("description",model.getDescription());
-                        intent.putExtra("skills",model.getSalary());
+                        intent.putExtra("skills",model.getSkills());
                         intent.putExtra("salary",model.getSalary());
 
                         startActivity(intent);

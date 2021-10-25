@@ -131,7 +131,12 @@ public class MyProfileActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     fullName.setText(dataSnapshot.child("full_name").getValue(String.class));
                     phone.setText(dataSnapshot.child("phone_no").getValue(String.class));
-                    email.setText(dataSnapshot.child("email").getValue(String.class));
+                    if (!user.isEmailVerified()) {
+                        email.setText(dataSnapshot.child("email").getValue(String.class));
+                    }else{
+                        email.setText(dataSnapshot.child("email").getValue(String.class)+"  (Verified Email)");
+
+                    }
                 } else {
                     Log.d("tag", "onEvent: Document do not exists");
                 }
