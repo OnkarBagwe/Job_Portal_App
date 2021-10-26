@@ -49,7 +49,7 @@ import java.io.ByteArrayOutputStream;
 
 public class MyProfileActivity extends AppCompatActivity {
     private static final int GALLERY_INTENT_CODE = 1023 ;
-    TextView fullName,email,phone,verifyMsg;
+    TextView fullName,email,phone,verifyMsg,location;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     String userId;
@@ -71,6 +71,7 @@ public class MyProfileActivity extends AppCompatActivity {
         phone = findViewById(R.id.profilePhone);
         fullName = findViewById(R.id.profileName);
         email = findViewById(R.id.profileEmail);
+        location=findViewById(R.id.profileLocation);
         resetPassLocal = findViewById(R.id.resetPasswordLocal);
 
         profileImage = findViewById(R.id.profileImage);
@@ -133,8 +134,10 @@ public class MyProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    fullName.setText(dataSnapshot.child("full_name").getValue(String.class));
+                    fullName.setText(dataSnapshot.child("full_name").getValue(String.class)+
+                            "  ("+(dataSnapshot.child("designation").getValue(String.class)+")"));
                     phone.setText(dataSnapshot.child("phone_no").getValue(String.class));
+                    location.setText(dataSnapshot.child("location").getValue(String.class));
                     if (!user.isEmailVerified()) {
                         email.setText(dataSnapshot.child("email").getValue(String.class));
                     }else{
