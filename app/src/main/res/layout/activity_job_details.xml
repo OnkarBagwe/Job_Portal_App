@@ -76,16 +76,16 @@
         android:id="@+id/job_details_salary"
         />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="Interested"
-        android:textColor="@android:color/white"
+<!--    <Button-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="10dp"-->
+<!--        android:text="Interested"-->
+<!--        android:textColor="@android:color/white"-->
 
-        android:background="#03A507"
-        android:textAppearance="?android:textAppearanceLarge"
-        android:id="@+id/btn_interested"
-        />
+<!--        android:background="#03A507"-->
+<!--        android:textAppearance="?android:textAppearanceLarge"-->
+<!--        android:id="@+id/btn_interested"-->
+<!--        />-->
 
 </LinearLayout>
