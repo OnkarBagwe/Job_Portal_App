@@ -14,13 +14,14 @@ import com.example.jobportalapp.Model.Data;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import org.w3c.dom.Text;
 
 public class AllJobActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
-
+    private Query query1;
     //Recycler
     private RecyclerView recyclerView;
 
@@ -39,8 +40,9 @@ public class AllJobActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("All Job Post");
 
         //Database
+        query1 = FirebaseDatabase.getInstance().getReference().child("Public database").orderByChild("deadline");
 
-        mAllJobPost= FirebaseDatabase.getInstance().getReference().child("Public database");
+        mAllJobPost = FirebaseDatabase.getInstance().getReference().child("Public database");
         mAllJobPost.keepSynced(true);
 
         recyclerView=findViewById(R.id.recycler_all_job);
@@ -65,7 +67,7 @@ public class AllJobActivity extends AppCompatActivity {
                        Data.class,
                        R.layout.alljobpost,
                        AllJobPostViewHolder.class,
-                       mAllJobPost
+                        query1
 
                 ) {
             @Override
