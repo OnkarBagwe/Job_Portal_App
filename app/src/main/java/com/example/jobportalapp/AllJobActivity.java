@@ -40,7 +40,7 @@ public class AllJobActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("All Job Post");
 
         //Database
-        query1 = FirebaseDatabase.getInstance().getReference().child("Public database").orderByChild("deadline");
+        query1 = FirebaseDatabase.getInstance().getReference().child("Public database").orderByChild("dateValue");
 
         mAllJobPost = FirebaseDatabase.getInstance().getReference().child("Public database");
         mAllJobPost.keepSynced(true);

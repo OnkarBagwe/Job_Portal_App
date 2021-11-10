@@ -18,12 +18,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class InsertJobPostActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
-
+    private float dateValue;
     private EditText job_title;
     private EditText job_description;
     private EditText job_skills;
@@ -80,6 +83,18 @@ public class InsertJobPostActivity extends AppCompatActivity {
                 String skills = job_skills.getText().toString().trim();
                 String salary = job_salary.getText().toString().trim();
                 String deadline = job_deadline.getText().toString().trim();
+
+                try{
+                    DateFormat format1 = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+                    Date date1 = format1.parse(deadline);
+                    long date1time = date1.getTime();
+                    float days = (date1time / (1000*60*60*24));
+                    dateValue = days*-1;
+
+                } catch (ParseException e){
+                    e.printStackTrace();
+                }
+
                 if(TextUtils.isEmpty(title)){
                     job_title.setError("Required Field...");
                     return;
@@ -108,7 +123,7 @@ public class InsertJobPostActivity extends AppCompatActivity {
                 String id = mJobPost.push().getKey();
                 String posted = DateFormat.getDateInstance().format(new Date());
 
-                Data data = new Data (title, description, skills, salary, id, posted, deadline);
+                Data data = new Data (title, description, skills, salary, id, posted, deadline, dateValue);
                 mJobPost.child(id).setValue(data);
 
                 mPublicDatabase.child(id).setValue(data);

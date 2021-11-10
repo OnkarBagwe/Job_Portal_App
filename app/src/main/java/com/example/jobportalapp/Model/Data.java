@@ -10,12 +10,13 @@ public class Data {
     String id;
     String date;
     String deadline;
+    Float dateValue;
 
     public Data(){
 
     }
 
-    public Data(String title, String description, String skills, String salary, String id, String date, String deadline) {
+    public Data(String title, String description, String skills, String salary, String id, String date, String deadline, Float dateValue) {
         this.title = title;
         this.description = description;
         this.skills = skills;
@@ -23,6 +24,7 @@ public class Data {
         this.id = id;
         this.date = date;
         this.deadline = deadline;
+        this.dateValue = dateValue;
     }
 
     public String getTitle() {
@@ -79,5 +81,13 @@ public class Data {
 
     public void setDeadline(String deadline) {
         this.deadline = deadline;
+    }
+
+    public Float getDateValue() {
+        return dateValue;
+    }
+
+    public void setDateValue(Float dateValue) {
+        this.dateValue = dateValue;
     }
 }
